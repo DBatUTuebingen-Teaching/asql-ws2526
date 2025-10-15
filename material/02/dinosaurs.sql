@@ -60,10 +60,11 @@ WHERE  d.legs IS NOT NULL;
 
 
 -----------------------------------------------------------------------
--- Equivalent formulation using DISTINCT ON (w/o ARG_MIN/ARG_MAX)
+-- Equivalent formulation using DISTINCT ON (w/o arg_min/arg_max)
 
-WITH bodies(legs, shape) AS (
-  SELECT d.legs, AVG(d.height / d.length) AS shape
+WITH
+bodies(legs, shape) AS (
+  SELECT d.legs, avg(d.height / d.length) AS shape
   FROM   dinosaurs AS d
   WHERE  d.legs IS NOT NULL
   GROUP BY d.legs
@@ -83,5 +84,5 @@ WITH bodies(legs, shape) AS (
 --
 -- Please post your alternative formulation of the dinosaur
 -- shape SQL query in the Advanced SQL Discord.
--- ⚠ Do not use ARG_MIN/ARG_MAX but rely on DISTINCT ON.
+-- ⚠ Do not use arg_min/arg_max but rely on DISTINCT ON.
 -- Looking forward to your solutions!
