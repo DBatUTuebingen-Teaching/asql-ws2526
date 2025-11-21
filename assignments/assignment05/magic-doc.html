@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>MTG JSON</title>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <script async="" src="magic-doc-css/analytics.js"></script>
+  <script>(function (i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o), m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m) })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga'); ga('create', 'UA-66983210-2', 'auto'); ga('send', 'pageview');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="magic-doc-css/css.css" rel="stylesheet" type="text/css">
+  <link type="text/css" rel="stylesheet" href="magic-doc-css/mtgjson.css">
+</head>
+
+<body>
+  <div id="header">
+    <div id="vendor"><a href="https://mtgjson.com/">MTG JSON</a></div>
+    <ul>
+      <li><a href="https://mtgjson.com/documentation.html">Documentation</a></li>
+      <li><a href="https://mtgjson.com/downloads/all-sets/">All Sets</a></li>
+      <li><a href="https://mtgjson.com/changelogs/mtgjson-v5/">Changelog</a></li>
+      <li><a href="https://github.com/mtgjson/mtgjson">Github</a></li>
+    </ul>
+  </div>
+  <div id="contents">
+    <div><a name="sets"></a>
+      <h1>Magic the Gathering Card Deck by <a href="https://mtgjson.com/">MTGJSON</a></h1>
+    </div>
+    <div><a name="allcards"></a>
+      <h2>Background</h2>
+      <p>Magic the Gathering is a collectible card game. Each player has their
+        own deck of cards. In game play, they build their deck out of at least
+        60 cards. New cards are released on a regular basis through expansion
+        sets. All cards belong either to the base sets or some expansion or
+        compilation set.</p>
+    </div>
+    <div><a name="allcards"></a>
+      <h2>magic-cards.json</h2>
+      <p>The <strong>magic-cards.json</strong> file is organized by card name and
+        merges card data from multiple sets into a single card object.<br><br>
+        Due to this merging of card data, several set specific fields are
+        not present in the cards data, <i>e.g.</i>, <TT>artist, border, flavor,
+          foreignNames, id, mciNumber, multiverseid, number, originalText,
+          originalType, rarity, releaseDate, reserved, timeshifted, variations,
+          watermark</TT> etc.<br><br>
+        This file is lighter weight and is meant to provide a quick and easy way
+        to get basic card data. (In case you don't find your favourite Magic
+        card, sorry, this data set is not very up to date.)<br><br>
+        The JSON file itself looks like this:<br></p>
+      <pre><code data-language="javascript">{
+...
+      "Nevinyrral's Disk" : { /* card data */ },
+                 "Norrit" : { /* card data */ },
+"Niv-Mizzet, Dracogenius" : { /* card data */ },
+...
+}</code></pre>
+    </div>
+    <div><a name="cards"></a>
+      <h2>Cards</h2>
+      <p>
+        The card data is a JSON object with key/value pairs. Below you will find
+        a table detailing each key.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>layout</td>
+            <td>"normal"</td>
+            <td>The card layout. Possible values: normal, split, flip, double-faced, token, plane, scheme, phenomenon,
+              leveler, vanguard, meld</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>"Niv-Mizzet"</td>
+            <td>The card name. For split, double-faced and flip cards,
+              just the name of one side of the card. Basically each 'sub-card' has
+              its own record.</td>
+          </tr>
+          <tr>
+            <td>manaCost</td>
+            <td>"{2}{U}{U}{R}{R}"</td>
+            <td>The mana cost of this card. Consists of one or more mana symbols.</td>
+          </tr>
+          <tr>
+            <td>cmc</td>
+            <td>6</td>
+            <td style="max-width:550px">Converted mana cost. Always a number. NOTE: cmc may
+              have a decimal point as cards from unhinged may contain "half mana"
+              (such as 'Little Girl' with a cmc of 0.5). Cards without this field have
+              an implied cmc of zero as per rule 202.3a</td>
+          </tr>
+          <tr>
+            <td>colors</td>
+            <td>[ "Blue", "Red" ]</td>
+            <td>The card colors. Usually this is derived from the
+              casting cost, but some cards are special (like the back of double-faced
+              cards and Ghostfire).</td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>"Legendary Creature - Dragon Wizard"</td>
+            <td>The card type. This is the type you would see on the
+              card if printed today.</td>
+          </tr>
+          <tr>
+            <td>supertypes</td>
+            <td>[ "Legendary" ]</td>
+            <td>The supertypes of the card. These appear to the far
+              left of the card type. Example values: Basic, Legendary, Snow, World,
+              Ongoing</td>
+          </tr>
+          <tr>
+            <td>types</td>
+            <td>[ "Creature" ]</td>
+            <td>The types of the card. These appear to the left of the
+              dash in a card type. Example values: Instant, Sorcery, Artifact,
+              Creature, Enchantment, Land, Planeswalker</td>
+          </tr>
+          <tr>
+            <td>subtypes</td>
+            <td>[ "Dragon", "Wizard" ]</td>
+            <td style="max-width:550px">The subtypes of the card. These appear to the right of
+              the dash in a card type. Usually each word is its own subtype. Example
+              values: Trap, Arcane, Equipment, Aura, Human, Rat, Squirrel, etc.</td>
+          </tr>
+          <td>text</td>
+          <td style="max-width:300px">"Flying Whenever Niv-Mizzet, Dracogenius deals damage to a player, you may draw a
+            card.
+            {U}{R}:
+            Niv-Mizzet, Dracogenius deals 1 damage to target creature or player."</td>
+          <td>The text of the card. May contain mana symbols and other symbols.</td>
+          </tr>
+          <tr>
+            <td>power</td>
+            <td>"5"</td>
+            <td>The power of the card. This is only present for
+              creatures. This is a string, not an integer, because some cards have
+              powers like: "1+*"</td>
+          </tr>
+          <tr>
+            <td>toughness</td>
+            <td>"5"</td>
+            <td>The toughness of the card. This is only present for
+              creatures. This is a string, not an integer, because some cards have
+              toughness like: "1+*"</td>
+          </tr>
+          <tr>
+            <td>imageName</td>
+            <td>"niv-mizzet, dracogenius"</td>
+            <td>This used to refer to the mtgimage.com file name for this card.<br>This field will continue to be set
+              correctly and is now only useful for UID purposes.</td>
+          </tr>
+          <tr>
+            <td>colorIdentity</td>
+            <td>[ "U", "G" ]</td>
+            <td style="max-width:550px">This is created reading all card color information and
+              costs. It is the same for double-sided cards (if they have different
+              colors, the identity will have both colors). It also identifies all mana
+              symbols in the card (cost and text). Mostly used on commander decks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="footer">
+    <p>The JSON files contains data that is Copyright © Wizards of the Coast - All Rights Reserved</p>
+    <p>This website is not affiliated with Wizards of the Coast in any way.</p>
+  </div>
+
+</body>
+
+</html>
