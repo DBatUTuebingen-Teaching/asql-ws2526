@@ -12,7 +12,7 @@ CREATE TABLE earthquakes (
 -- Hint: You must either open DuckDB in the directory containing
 -- earthquakes.json or change the path in read_json_objects.
 INSERT INTO earthquakes(title,quake)
-SELECT j->'properties'->>'title' AS title, j->'properties' AS quake
+SELECT j->'properties'->>'title' AS title, j AS quake
 FROM read_json_objects('earthquakes.json') AS _(j);
 
 CREATE MACRO haversine(lat_p1, lon_p1, lat_p2, lon_p2) AS
