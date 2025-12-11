@@ -243,10 +243,10 @@ ORDER BY w.b, w.a, w.row;
 CREATE OR REPLACE MACRO xs() AS '((b*2)-4×a×c)*0.5';
 
 SELECT inp.pos, inp.c,
-       sum([0,1,-1][p.oc]) OVER (ORDER BY inp.pos) AS d
+       sum([1,-1][p.oc]) OVER (ORDER BY inp.pos) AS d
 FROM   unnest(string_split(xs(), ''))
          WITH ORDINALITY AS inp(c,pos),
-       LATERAL (VALUES (list_position(['(',')'], inp.c) + 1)) AS p(oc)
+       LATERAL (VALUES (list_position(['(',')'], inp.c))) AS p(oc)
 ORDER BY inp.pos;
 
 
