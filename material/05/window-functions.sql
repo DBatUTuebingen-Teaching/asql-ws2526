@@ -289,11 +289,11 @@ INSERT INTO map(x, alt) VALUES
   (110, 700),
   (120, 500);
 
-SELECT m.x, m.alt, bar(m.alt,0,1000,20)
+SELECT m.x, m.alt, bar(m.alt,0,1000,20) AS hills
 FROM   map AS m;
 
 
-SELECT m.x, m.alt,
+SELECT m.x, m.alt, bar(m.alt,0,1000,20) AS hills,
        lead(m.alt, 1) OVER rightwards - m.alt AS "by [m]",
        CASE sign("by [m]")
             WHEN -1 THEN '⭨'
@@ -303,6 +303,12 @@ SELECT m.x, m.alt,
             END AS climb,
 FROM   map AS m
 WINDOW rightwards AS (ORDER BY m.x);
+
+
+
+-- One way to replace the CASE ... WHEN conditional:
+--
+-- coalesce('⭨⭢⭧'[sign("by [m]") + 2], '?') AS climb
 
 -----------------------------------------------------------------------
 -- FIRST_VALUE, LAST_VALUE, NTH_VALUE
@@ -414,7 +420,7 @@ SELECT w."row"                          AS "current row",
                                         AS "like row_number",
        -- rank()
        rank() OVER win                  AS "rank",
-                        --            size of the peer group of the current row
+                        --            size of the peer group of the current row (*)
                         -- ┌────────────────────────────────┴──────────────────────────────┐
        count(*) OVER win - count(*) OVER (win RANGE BETWEEN CURRENT ROW AND CURRENT ROW) + 1
                                         AS "like rank",
@@ -424,6 +430,11 @@ SELECT w."row"                          AS "current row",
 FROM   W AS w
 WINDOW win AS (ORDER BY w.a)
 ORDER BY w.a;
+
+
+
+-- (*) Alternatively:
+-- count(*) OVER (win RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW EXCLUDE GROUP) + 1
 
 
 -----------------------------------------------------------------------
@@ -487,7 +498,8 @@ INSERT INTO experiment(t, f)
   SELECT t, random() * 40 AS f
   FROM   range(N()) AS _(t);
 
-TABLE experiment;
+SELECT e.t, bar(e.f, 0, 40, 20) AS measured
+FROM experiment AS e;
 
 WITH
 -- Tag each point in the data set with its segment #
@@ -514,3 +526,13 @@ ORDER BY s.t0;
 -- ORDER BY t;
 -- TABLE segments
 -- ORDER BY t0;
+
+
+
+-- Alternative to CTE segments:
+--
+-- segments(t0, t1, f0, f1) AS (
+--    SELECT t.tile, min(t.t) AS t0, max(t.t) AS t1, arg_min(t.f, t.t) AS f0, arg_max(t.f, t.t) AS f1
+--    FROM tiles AS t
+--    GROUP BY t.tile
+)
